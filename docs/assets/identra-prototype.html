@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDENTRA — Graphic Design & AI UGC Video Editing</title>
+<meta name="description" content="Graphic design and AI-generated UGC ads for brands that need people to stop scrolling. Selected work, process, and contact.">
+
+<!--
+  ============================================================
+  HOW TO CUSTOMIZE THIS FILE
+  ============================================================
+  1. Search "REPLACE:" for every spot that needs your real
+     content — email, socials, and card captions.
+  2. VIDEO CARDS (in #work-rail): each .video-card is a CSS
+     mockup with no real video yet. To drop in a real clip,
+     replace the <div class="video-card__bg"> with a real
+     <video> or <img> tag, or just set the background-image
+     inline style on that div to your thumbnail URL.
+  3. DESIGN TILES (in .design-grid): swap the .tile__mock
+     content for a real project image the same way.
+  4. Colors, fonts, and spacing are all CSS custom properties
+     at the top of the <style> block — change once, updates
+     everywhere.
+  ============================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    /* ---- color tokens ---- */
+    --bg: #0c0a12;
+    --bg-soft: #14101c;
+    --surface: #1b1526;
+    --surface-2: #241c33;
+    --line: rgba(246,243,239,0.10);
+    --line-strong: rgba(246,243,239,0.18);
+    --text: #f6f3ef;
+    --text-dim: #a79fbd;
+    --text-dimmer: #6f6684;
+
+    --accent-red: #ff4b3d;      /* hook / rec / primary CTA */
+    --accent-red-ink: #2a0e0a;
+    --accent-cyan: #33e6c0;     /* chroma / voiceover category */
+    --accent-violet: #b98bff;   /* synthetic / AI / motion category */
+
+    /* ---- type ---- */
+    --font-display: 'Anton', sans-serif;
+    --font-body: 'Manrope', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* ---- rhythm ---- */
+    --section-y: clamp(4rem, 9vw, 8rem);
+    --container: 1240px;
+    --radius-card: 22px;
+    --radius-tile: 6px;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  *,*::before,*::after{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  html.js-ready{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* subtle grain/texture so the flat dark bg doesn't feel empty */
+  body::before{
+    content:"";
+    position: fixed;
+    inset:0;
+    pointer-events:none;
+    z-index: 1;
+    opacity: 0.5;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(185,139,255,0.06), transparent 40%),
+      radial-gradient(circle at 85% 10%, rgba(255,75,61,0.05), transparent 45%),
+      radial-gradient(circle at 60% 90%, rgba(51,230,192,0.05), transparent 40%);
+  }
+
+  img,svg{ display:block; max-width:100%; }
+  a{ color: inherit; text-decoration:none; }
+  button{ font: inherit; color: inherit; background:none; border:none; cursor:pointer; }
+  ul{ list-style:none; margin:0; padding:0; }
+
+  ::selection{ background: var(--accent-red); color: var(--accent-red-ink); }
+
+  :focus-visible{
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .container{
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+    position: relative;
+    z-index: 2;
+  }
+
+  .section{ padding-block: var(--section-y); }
+  .section--tight{ padding-block: calc(var(--section-y) * 0.6); }
+
+  .eyebrow-free-heading{ margin: 0 0 0.6em; }
+
+  h1,h2,h3{ font-family: var(--font-display); font-weight:400; letter-spacing: 0.005em; margin:0; }
+
+  h2{
+    font-size: clamp(2rem, 4.4vw, 3.1rem);
+    line-height: 1.02;
+  }
+
+  .section-head{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap: 1.5rem;
+    margin-bottom: clamp(2rem, 4vw, 3rem); 
+  }
+
+  .section-head p{
+    max-width: 34ch;
+    color: var(--text-dim);
+    font-size: 1.02rem;
+    margin:0;
+  }
+ 
+  .mono-tag{
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+    color: var(--text-dimmer);
+  }
+
+  /* ---------------- buttons / chips ---------------- */
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:0.5rem;
+    padding: 0.85rem 1.5rem;
+    border-radius: 999px;
+    font-weight:700;
+    font-size: 0.95rem;
+    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  }
+  .btn--primary{
+    background: var(--accent-red);
+    color: #1a0705;
+  }
+  .btn--primary:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px -10px rgba(255,75,61,0.55);
+  }
+  .btn--ghost{
+    border: 1px solid var(--line-strong);
+    color: var(--text);
+  }
+  .btn--ghost:hover{ border-color: var(--accent-cyan); color: var(--accent-cyan); }
+
+  .chip{
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    color: var(--text-dim);
+    transition: all 0.2s var(--ease);
+    white-space: nowrap;
+  }
+  .chip:hover{ border-color: var(--text-dim); color: var(--text); }
+  .chip[aria-pressed="true"]{
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+
+  /* ---------------- nav ---------------- */
+
+  header.nav{
+    position: sticky;
+    top:0;
+    z-index: 50;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: rgba(12,10,18,0.72);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-block: 1rem;
+  }
+  .wordmark{
+    display:flex;
+    align-items:center;
+    gap:0.55rem;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    letter-spacing: 0.02em;
+  }
+  .wordmark .dot{
+    width: 9px; height:9px; border-radius:50%;
+    background: var(--accent-red);
+    box-shadow: 0 0 12px 2px rgba(255,75,61,0.65);
+  }
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap: clamp(1.2rem, 2.5vw, 2.2rem);
+  }
+  .nav-links a{
+    font-size: 0.92rem;
+    color: var(--text-dim);
+    transition: color 0.2s var(--ease);
+  }
+  .nav-links a:hover{ color: var(--text); }
+  .nav-cta{ display:none; }
+  .nav-toggle{ display:none; }
+
+  @media (min-width: 780px){
+    .nav-cta{ display:inline-flex; }
+  }
+  @media (max-width: 779px){
+    .nav-links{ display:none; }
+    .nav-toggle{
+      display:flex;
+      flex-direction:column;
+      gap:5px;
+      padding: 0.4rem;
+    }
+    .nav-toggle span{ width:22px; height:2px; background: var(--text); display:block; }
+  }
+
+  /* mobile drawer */
+  .mobile-drawer{
+    display:none;
+    flex-direction:column;
+    gap: 0.2rem;
+    padding: 0.5rem clamp(1.25rem,4vw,2.5rem) 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+  .mobile-drawer.is-open{ display:flex; }
+  .mobile-drawer a{
+    padding: 0.75rem 0;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--line);
+    font-size: 1rem;
+  }
+
+  /* ---------------- hero ---------------- */
+
+  .hero{
+    padding-block: clamp(3.5rem, 9vw, 7rem) clamp(3rem, 7vw, 5rem);
+    position:relative;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 6vw, 4rem);
+    align-items:end;
+  }
+  @media (min-width: 960px){
+    .hero-grid{ grid-template-columns: 1.35fr 0.9fr; }
+  }
+
+  .hero-kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:0.55rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--accent-red);
+    margin-bottom: 1.4rem;
+  }
+  .hero-kicker .pulse{
+    width:8px; height:8px; border-radius:50%;
+    background: var(--accent-red);
+  }
+  html.js-ready .hero-kicker .pulse{ animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse{
+    0%,100%{ opacity:1; }
+    50%{ opacity:0.25; }
+  }
+
+  .hero h1{
+    font-size: clamp(2.9rem, 8.6vw, 6.4rem);
+    line-height: 0.96;
+    overflow: hidden;
+  }
+  .hero h1 .line{ display:block; overflow:hidden; }
+  .hero h1 .line span{
+    display:block;
+    transform: translateY(0);
+  }
+  html.js-ready .hero h1 .line span{
+    transform: translateY(115%);
+    animation: lineIn 0.85s var(--ease) forwards;
+  }
+  .hero h1 .line:nth-child(1) span{ animation-delay: 0.05s; }
+  .hero h1 .line:nth-child(2) span{ animation-delay: 0.16s; }
+  @keyframes lineIn{ to{ transform: translateY(0); } }
+
+  .hero-sub{
+    max-width: 46ch;
+    color: var(--text-dim);
+    font-size: clamp(1.02rem, 1.4vw, 1.18rem);
+    margin: 1.6rem 0 2.2rem;
+  }
+
+  .hero-actions{ display:flex; flex-wrap:wrap; gap: 0.9rem; align-items:center; }
+  .hero-scroll-cue{
+    display:inline-flex; align-items:center; gap:0.4rem;
+    color: var(--text-dimmer); font-size:0.88rem;
+  }
+
+  /* featured card beside headline */
+  .hero-feature{
+    justify-self: center;
+    width: min(260px, 100%);
+  }
+  .hero-feature .video-card{ aspect-ratio: 9/16; }
+
+  /* ---------------- work section ---------------- */
+
+  .filters{
+    display:flex; flex-wrap:wrap; gap:0.6rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .rail-wrap{ position:relative; }
+  .video-rail{
+    display:flex;
+    gap: 1.1rem;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding-bottom: 0.75rem;
+    margin: 0 -0.25rem;
+    padding-inline: 0.25rem;
+  }
+  .video-rail::-webkit-scrollbar{ height:6px; }
+  .video-rail::-webkit-scrollbar-thumb{ background: var(--line-strong); border-radius:99px; }
+
+  .video-card{
+    flex: 0 0 auto;
+    width: min(230px, 62vw);
+    aspect-ratio: 9/16;
+    scroll-snap-align: start;
+    border-radius: var(--radius-card);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--line-strong);
+    transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .video-card:hover{ transform: translateY(-6px); }
+
+  .video-card[data-cat="avatar"]{
+    background: linear-gradient(155deg, #241c33 0%, #3a1f3f 55%, #1b1526 100%);
+  }
+  .video-card[data-cat="avatar"]:hover{ box-shadow: 0 18px 40px -14px rgba(185,139,255,0.45); }
+
+  .video-card[data-cat="voiceover"]{
+    background: linear-gradient(155deg, #1b2632 0%, #163634 55%, #14101c 100%);
+  }
+  .video-card[data-cat="voiceover"]:hover{ box-shadow: 0 18px 40px -14px rgba(51,230,192,0.4); }
+
+  .video-card[data-cat="motion"]{
+    background: linear-gradient(155deg, #331a1c 0%, #3f1f22 55%, #1b1526 100%);
+  }
+  .video-card[data-cat="motion"]:hover{ box-shadow: 0 18px 40px -14px rgba(255,75,61,0.4); }
+
+  .video-card.is-hidden{ display:none; }
+
+  .video-card__top{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    padding: 0.85rem 0.9rem;
+  }
+  .video-card__cat{
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    color: rgba(246,243,239,0.75);
+    background: rgba(0,0,0,0.35);
+    padding: 0.3rem 0.55rem;
+    border-radius: 999px;
+  }
+  .video-card__time{
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    color: rgba(246,243,239,0.55);
+  }
+
+  .video-card__play{
+    align-self:center;
+    width: 46px; height:46px;
+    border-radius:50%;
+    background: rgba(246,243,239,0.14);
+    border: 1px solid rgba(246,243,239,0.3);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .video-card__play svg{ width:16px; height:16px; margin-left:2px; }
+
+  .video-card__bottom{ padding: 0.9rem; }
+  .video-card__caption-strip{
+    font-weight:800;
+    font-size: 0.95rem;
+    line-height:1.15;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  }
+  .video-card__desc{
+    font-size: 0.76rem;
+    color: rgba(246,243,239,0.65);
+  }
+
+  /* design tiles */
+  .design-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.1rem;
+  }
+  .tile{
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-tile);
+    overflow:hidden;
+    background: var(--surface);
+    transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
+  }
+  .tile:hover{ border-color: var(--text-dim); transform: translateY(-3px); }
+
+  .tile__mock{
+    aspect-ratio: 4/3;
+    padding: 1rem;
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0.4rem;
+  }
+  .tile__mock span{ border-radius: 3px; }
+  .tile__mock .swatch{ grid-column: span 1; }
+
+  .tile__info{
+    padding: 0.9rem 1rem 1.1rem;
+    border-top: 1px solid var(--line);
+  }
+  .tile__title{ font-weight:700; font-size:0.95rem; margin-bottom:0.25rem; }
+  .tile__meta{ font-family: var(--font-mono); font-size:0.72rem; color: var(--text-dimmer); }
+
+  /* ---------------- process ---------------- */
+
+  .process-list{
+    display:grid;
+    gap: 0;
+    border-top: 1px solid var(--line);
+  }
+  .process-item{
+    display:grid;
+    grid-template-columns: 3.2rem 1fr;
+    gap: 1.2rem;
+    padding: 1.6rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  @media (min-width: 720px){
+    .process-item{ grid-template-columns: 3.2rem 1fr 1.6fr; align-items:baseline; }
+  }
+  .process-num{
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent-red);
+    padding-top: 0.2rem;
+  }
+  .process-title{ font-weight:800; font-size: 1.15rem; }
+  .process-desc{ color: var(--text-dim); font-size: 0.95rem; max-width: 52ch; }
+
+  /* ---------------- about ---------------- */
+
+  .about-grid{
+    display:grid;
+    gap: 2.5rem;
+  }
+  @media (min-width: 860px){
+    .about-grid{ grid-template-columns: 1.1fr 0.9fr; }
+  }
+  .about-copy p{
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    line-height:1.4;
+    color: var(--text);
+    max-width: 40ch;
+  }
+  .about-copy p + p{ color: var(--text-dim); }
+
+  .stack-label{ margin-bottom: 0.9rem; }
+  .stack-chips{ display:flex; flex-wrap:wrap; gap:0.55rem; }
+
+  /* ---------------- contact ---------------- */
+
+  .contact{
+    background: var(--surface);
+    border-radius: 28px;
+    padding: clamp(2.4rem, 6vw, 4.5rem);
+    text-align:center;
+    border: 1px solid var(--line-strong);
+  }
+  .contact h2{ margin-bottom: 0.8rem; }
+  .contact p{
+    color: var(--text-dim);
+    max-width: 42ch;
+    margin: 0 auto 2rem;
+    font-size: 1.05rem;
+  }
+  .contact-actions{ display:flex; flex-wrap:wrap; gap:0.9rem; justify-content:center; }
+  .social-row{
+    display:flex; gap:1.4rem; justify-content:center;
+    margin-top: 2.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+  .social-row a{ color: var(--text-dim); }
+  .social-row a:hover{ color: var(--accent-cyan); }
+
+  /* ---------------- footer ---------------- */
+
+  footer{
+    padding: 2.5rem clamp(1.25rem,4vw,2.5rem) 3rem;
+    display:flex; flex-wrap:wrap; gap:1rem;
+    justify-content:space-between;
+    align-items:center;
+    border-top: 1px solid var(--line);
+    color: var(--text-dimmer);
+    font-size: 0.85rem;
+  }
+  footer a{ color: var(--text-dim); }
+  footer a:hover{ color: var(--text); }
+
+  /* ---------------- reduced motion ---------------- */
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- tiny blocking script so hero animation only runs when JS + motion are available, no flash of hidden text -->
+<script>
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('js-ready');
+  }
+</script>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a href="#top" class="wordmark"><span class="dot" aria-hidden="true"></span>IDENTRA</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#work">Work</a>
+      <a href="#process">Process</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="#contact" class="btn btn--primary nav-cta">Start a project</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileDrawer">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a href="#work">Work</a>
+    <a href="#process">Process</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-kicker">
+          <span class="pulse" aria-hidden="true"></span>
+          <span>REC <span id="recTimer">00:00</span> — always rolling</span>
+        </div>
+
+        <h1>
+          <span class="line"><span>Edits built</span></span>
+          <span class="line"><span>for the first two seconds.</span></span>
+        </h1>
+
+        <p class="hero-sub">
+          Graphic design and AI-generated UGC ads for brands that need
+          people to stop scrolling and start watching. One studio,
+          start to finish.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn--primary">Start a project</a>
+          <a href="#work" class="btn btn--ghost">See the work</a>
+        </div>
+      </div>
+
+      <!-- featured card, just a visual anchor -->
+      <div class="hero-feature">
+        <div class="video-card" data-cat="avatar">
+          <div class="video-card__top">
+            <span class="video-card__cat">AI Avatar UGC</span>
+            <span class="video-card__time">00:14</span>
+          </div>
+          <div class="video-card__play" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div class="video-card__bottom">
+            <div class="video-card__caption-strip">"okay this actually works"</div>
+            <div class="video-card__desc">Fragrance launch — VENTI ABSOLU</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WORK ============ -->
+  <section id="work" class="section container">
+    <div class="section-head">
+      <h2>Selected work</h2>
+      <p>A mix of AI avatar UGC, voiceover product ads, kinetic motion,
+        and the graphic design underneath all of it.</p>
+    </div>
+
+    <div class="filters" role="group" aria-label="Filter video work by category">
+      <button class="chip" data-filter="all" aria-pressed="true">All video work</button>
+      <button class="chip" data-filter="avatar" aria-pressed="false">AI Avatar UGC</button>
+      <button class="chip" data-filter="voiceover" aria-pressed="false">Voiceover Demos</button>
+      <button class="chip" data-filter="motion" aria-pressed="false">Motion &amp; Kinetic Type</button>
+    </div>
+                            
+    <div class="rail-wrap"> 
+      <div class="video-rail" id="videoRail">   
+ 
+        <!-- REPLACE: swap each caption/desc, and set a real background-image
+             or <video> inside .video-card__top's parent for real thumbnails -->
+
+        <div class="video-card" data-cat="avatar"> 
+          <div class="video-card__top">
+            <span class="video-card__cat">AI Avatar UGC</span>
+            <span class="video-card__time">00:11</span>
+          </div>
+          <div class="video-card__play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="video-card__bottom">
+            <div class="video-card__caption-strip">"wait, my skin looks different"</div>
+            <div class="video-card__desc">Skincare hook — talking head</div>
+          </div>
+        </div>
+
+        <div class="video-card" data-cat="voiceover">
+          <div class="video-card__top">
+            <span class="video-card__cat">Voiceover Demo</span>
+            <span class="video-card__time">00:22</span>
+          </div>
+          <div class="video-card__play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="video-card__bottom">
+            <div class="video-card__caption-strip">"the part nobody tells you"</div>
+            <div class="video-card__desc">Kitchen gadget — hands-only demo</div>
+          </div>
+        </div>
+
+        <div class="video-card" data-cat="motion">
+          <div class="video-card__top">
+            <span class="video-card__cat">Motion &amp; Type</span>
+            <span class="video-card__time">00:08</span>
+          </div>
+          <div class="video-card__play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="video-card__bottom">
+            <div class="video-card__caption-strip">IDENTRA — logo assembly</div>
+            <div class="video-card__desc">Brand film opener, kinetic type</div>
+          </div>
+        </div>
+
+        <div class="video-card" data-cat="voiceover">
+          <div class="video-card__top">
+            <span class="video-card__cat">Voiceover Demo</span>
+            <span class="video-card__time">00:19</span>
+          </div>
+          <div class="video-card__play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="video-card__bottom">
+            <div class="video-card__caption-strip">"restocked. again."</div>
+            <div class="video-card__desc">Streetwear drop — voiceover ad</div>
+          </div>
+        </div>
+
+        <div class="video-card" data-cat="avatar">
+          <div class="video-card__top">
+            <span class="video-card__cat">AI Avatar UGC</span>
+            <span class="video-card__time">00:16</span>
+          </div>
+          <div class="video-card__play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="video-card__bottom">
+            <div class="video-card__caption-strip">"I take this every morning"</div>
+            <div class="video-card__desc">Supplement demo — AI presenter</div>
+          </div>
+        </div>
+
+        <div class="video-card" data-cat="motion">
+          <div class="video-card__top">
+            <span class="video-card__cat">Motion &amp; Type</span>
+            <span class="video-card__time">00:06</span>
+          </div>
+          <div class="video-card__play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="video-card__bottom">
+            <div class="video-card__caption-strip">reveal — 3 frames, no cuts</div>
+            <div class="video-card__desc">Logo reveal, motion study</div>
+          </div>
+        </div>
+
+        <div class="video-card" data-cat="voiceover">
+          <div class="video-card__top">
+            <span class="video-card__cat">Voiceover Demo</span>
+            <span class="video-card__time">00:25</span>
+          </div>
+          <div class="video-card__play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="video-card__bottom">
+            <div class="video-card__caption-strip">"apparel drop, 48 hours only"</div>
+            <div class="video-card__desc">Apparel — voiceover + b-roll</div>
+          </div>
+        </div>
+
+        <div class="video-card" data-cat="avatar">
+          <div class="video-card__top">
+            <span class="video-card__cat">AI Avatar UGC</span>
+            <span class="video-card__time">00:13</span>
+          </div>
+          <div class="video-card__play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="video-card__bottom">
+            <div class="video-card__caption-strip">"this smells expensive"</div>
+            <div class="video-card__desc">VENTI ABSOLU — AI presenter</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- graphic design tiles, separate row since these aren't video -->
+    <div style="margin-top: clamp(3rem, 6vw, 4.5rem);">
+      <h3 style="font-family:var(--font-body); font-weight:800; font-size:1.15rem; margin-bottom:1.4rem;">
+        Graphic design &amp; branding
+      </h3>
+      <div class="design-grid">
+
+        <!-- REPLACE: swap .tile__mock swatch colors and text for real project thumbnails -->
+
+        <div class="tile">
+          <div class="tile__mock" style="background:#1b1526;">
+            <span class="swatch" style="background:var(--accent-red); grid-column:span 2; grid-row:span 2;"></span>
+            <span class="swatch" style="background:#2a2138;"></span> 
+            <span class="swatch" style="background:#2a2138;"></span>
+            <span class="swatch" style="background:#2a2138; grid-column:span 2;"></span>
+          </div>
+          <div class="tile__info">
+            <div class="tile__title">Brand identity — streetwear label</div>
+            <div class="tile__meta">Logo · type system · socials</div>
+          </div>
+        </div>
+
+        <div class="tile">
+          <div class="tile__mock" style="background:#14101c;">
+            <span class="swatch" style="background:var(--accent-violet); grid-column:span 3;"></span>
+            <span class="swatch" style="background:#241c33;"></span>
+            <span class="swatch" style="background:#241c33; grid-column:span 2;"></span>
+            <span class="swatch" style="background:#241c33;"></span>
+            <span class="swatch" style="background:#241c33;"></span>
+          </div>
+          <div class="tile__info">
+            <div class="tile__title">Packaging &amp; logo system — VENTI ABSOLU</div>
+            <div class="tile__meta">Fragrance line · packaging</div>
+          </div>             
+        </div>          
+
+        <div class="tile"> 
+          <div class="tile__mock" style="background:#1b2632;">
+            <span class="swatch" style="background:var(--accent-cyan); grid-column:span 1; grid-row:span 3;"></span>
+            <span class="swatch" style="background:#22303c; grid-column:span 3;"></span>
+            <span class="swatch" style="background:#22303c; grid-column:span 3;"></span>
+            <span class="swatch" style="background:#22303c; grid-column:span 3;"></span>
+          </div>
+          <div class="tile__info">
+            <div class="tile__title">Social templates — e-commerce brand</div>
+            <div class="tile__meta">Post + story system</div>
+          </div>
+        </div>
+
+        <div class="tile">
+          <div class="tile__mock" style="background:#241c33;">
+            <span class="swatch" style="background:#3a2c4d; grid-column:span 4;"></span>
+            <span class="swatch" style="background:var(--accent-red);"></span>
+            <span class="swatch" style="background:#3a2c4d;"></span>
+            <span class="swatch" style="background:#3a2c4d;"></span>
+            <span class="swatch" style="background:#3a2c4d;"></span>
+          </div>
+          <div class="tile__info">
+            <div class="tile__title">Pitch deck design — marketing agency</div>
+            <div class="tile__meta">Slide system · iconography</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROCESS ============ -->
+  <section id="process" class="section container">
+    <div class="section-head">
+      <h2>How a project runs</h2>
+      <p>Five steps, start to delivered file. No stage gets skipped
+        because the shot is AI-generated.</p>
+    </div>
+
+    <div class="process-list">
+      <div class="process-item">
+        <div class="process-num">01</div>
+        <div class="process-title">Brief &amp; hook</div>
+        <div class="process-desc">We start with the product, the platform, and the two seconds that have to land before anyone scrolls past.</div>
+      </div>
+      <div class="process-item">
+        <div class="process-num">02</div>
+        <div class="process-title">Script &amp; storyboard</div>
+        <div class="process-desc">Beats mapped to a 15–30 second runtime before anything gets generated, so the edit has a shape to hit.</div>
+      </div>
+      <div class="process-item">
+        <div class="process-num">03</div>
+        <div class="process-title">AI generation</div>        
+        <div class="process-desc">The right model for the shot — Veo 3, Kling, Hailuo, Higgsfield, PixVerse, Runway Gen-4, or Luma Dream Machine — picked case by case, not defaulted to one tool.</div>
+      </div>    
+      <div class="process-item">        
+        <div class="process-num">04</div>    
+        <div class="process-title">Edit &amp; sound design</div>
+        <div class="process-desc">Pacing, captions, sound design, and a mix that still holds up on a phone speaker.</div>
+      </div>
+      <div class="process-item">
+        <div class="process-num">05</div>
+        <div class="process-title">Delivery</div>
+        <div class="process-desc">Platform-ready exports — 9:16, 1:1, 16:9 — plus source files and caption assets.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="section container">
+    <div class="about-grid">
+      <div class="about-copy">
+        <p>IDENTRA is a one-person creative studio doing graphic design
+          and AI-generated UGC ads for brands that live on TikTok,
+          Reels, and Shorts.</p>
+        <p>Every edit is scripted, generated, sound-designed, and
+          captioned in-house — no separate hand-offs between the idea
+          and the file you get back.</p>
+      </div>
+      <div>
+        <div class="mono-tag stack-label">Tools in rotation</div>
+        <div class="stack-chips">
+          <span class="chip" style="cursor:default;">Veo 3</span>
+          <span class="chip" style="cursor:default;">Kling</span>
+          <span class="chip" style="cursor:default;">Hailuo</span>
+          <span class="chip" style="cursor:default;">Higgsfield</span>
+          <span class="chip" style="cursor:default;">PixVerse</span>
+          <span class="chip" style="cursor:default;">Runway Gen-4</span>
+          <span class="chip" style="cursor:default;">Luma Dream Machine</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" class="section container">
+    <div class="contact">
+      <h2>Start a project</h2>
+      <p>Tell me what you're launching and what it needs to do.
+        I'll reply with next steps and a quote.</p>
+      <div class="contact-actions">
+        <!-- REPLACE: your real email -->
+        <a href="mailto:hello@identra.studio" class="btn btn--primary">Email hello@identra.studio</a>
+      </div>
+      <div class="social-row">
+        <!-- REPLACE: your real handles/links -->
+        <a href="#">TikTok</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div>© <span id="year"></span> IDENTRA. Built in-house.</div>
+  <div>
+    <a href="#work">Work</a> &nbsp;·&nbsp;
+    <a href="#process">Process</a> &nbsp;·&nbsp;
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+  // year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // mobile nav toggle
+  var toggle = document.getElementById('navToggle');
+  var drawer = document.getElementById('mobileDrawer');
+  toggle.addEventListener('click', function(){
+    var open = drawer.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  drawer.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      drawer.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });                                                                                                      
+  +
+                                                                                      
+  // category filter for the video rail                                                        
+  var chips = document.querySelectorAll('.filters .chip');
+  var cards = document.querySelectorAll('#videoRail .video-card');
+  chips.forEach(function(chip){                                                      
+    chip.addEventListener('click', function(){
+      chips.forEach(function(c){ c.setAttribute('aria-pressed','false'); });          
+      chip.setAttribute('aria-pressed','true');
+      var filter = chip.getAttribute('data-filter');
+      cards.forEach(function(card){
+        var match = (filter === 'all' || card.getAttribute('data-cat') === filter);       
+        card.classList.toggle('is-hidden', !match);
+      });
+    });
+  });
+
+  // rec timer — purely decorative, counts up from page load
+  var start = Date.now();
+  var timerEl = document.getElementById('recTimer');
+  function tick(){
+    var elapsed = Math.floor((Date.now() - start) / 1000);
+    var m = String(Math.floor(elapsed / 60)).padStart(2, '0');
+    var s = String(elapsed % 60).padStart(2, '0');
+    timerEl.textContent = m + ':' + s;
+  }
+  setInterval(tick, 1000);
+</script>
+
+</body>
+</html>
